@@ -29,11 +29,6 @@
                 <h1 class="text-3xl font-bold tracking-wide">震源機制球手繪 Demo 與原理展示</h1>
                 <p class="text-slate-300 mt-2 text-sm sm:text-base">地震學作業：P波初動解（Focal Mechanism）之幾何投影實作</p>
             </div>
-            <div class="mt-4 sm:mt-0">
-                <a href="https://github.com/minh891711/earthquake_focal_mechanisms" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-white/20">
-                    <i class="fab fa-github text-lg"></i> Repository
-                </a>
-            </div>
         </div>
     </header>
 
@@ -43,15 +38,14 @@
             <h2 class="text-xl font-bold border-b border-slate-200 pb-3 text-slate-800 flex items-center gap-2">
                 <i class="fa-solid fa-images text-indigo-600"></i> 圖表成果對照
             </h2>
-            <p class="text-gray-600 text-sm mt-2 mb-6">點擊下方按鈕可快速切換檢視，或直接並排對比手繪圖與程式產出的正確解答。</p>
 
-            <div class="flex justify-center gap-4 mb-6 sm:hidden">
+            <div class="flex justify-center gap-4 my-6 sm:hidden">
                 <button onclick="toggleView('hand')" id="btn-hand" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-medium shadow shadow-indigo-200">檢視我的手繪</button>
                 <button onclick="toggleView('ai')" id="btn-ai" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-medium">檢視程式正解</button>
                 <button onclick="toggleView('both')" id="btn-both" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-medium">並排對比</button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="image-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6" id="image-grid">
                 <div id="wrapper-hand" class="image-compare-container bg-slate-50 p-4 rounded-xl border border-slate-200/60 flex flex-col items-center">
                     <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-3 shadow-sm">My Artwork | 手繪圖</span>
                     <div class="w-full bg-white rounded-lg overflow-hidden border border-slate-100 flex items-center justify-center min-h-[350px]">
@@ -93,8 +87,8 @@
                     <div>
                         <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-table-list text-indigo-500"></i> 基礎幾何與對應參數</h4>
                         <ul class="space-y-2 text-gray-600">
-                            <li><strong class="text-slate-800">方位角 (Azimuth, Az)：</strong> 測站相對於震源的正北順時針夾角（$0^\circ \sim 360^\circ$），決定點在投影網上的<strong>圓周角度</strong>。</li>
-                            <li><strong class="text-slate-800">出射角 (Take-off Angle, $i$)：</strong> 震源射線向外發射時與「鉛直向下」方向的夾角。</li>
+                            <li><strong class="text-slate-800">方位角 (Azimuth, Az)：</strong> 測站相對於震源的正北順時針夾角（0° ~ 360°），決定點在投影網上的<strong>圓周角度</strong>。</li>
+                            <li><strong class="text-slate-800">出射角 (Take-off Angle, i)：</strong> 震源射線向外發射時與「鉛直向下」方向的夾角。</li>
                         </ul>
                     </div>
                     <div class="mt-4 p-2 bg-white rounded border border-slate-200">
@@ -117,7 +111,7 @@
                     <div>
                         <h4 class="font-bold text-amber-900">⚡ 世紀大誤會：出射角到底是「由內向外」還是「由外向內」？</h4>
                         <p class="text-amber-800 mt-1 leading-relaxed">
-                            <strong>絕對是由內（圓心）向外數格數！</strong> 構造地質學在畫岩層傾角（Dip）時，外圈是 $0^\circ$、圓心是 $90^\circ$（由外向內數）；但地震學畫震源機制球時，<strong>圓心是 $0^\circ$、外圈是 $90^\circ$</strong>。因此，出射角 $70^\circ$ 代表它接近水平射出，點必須靠近外圈，也就是要從圓心向外數出 $70^\circ$（或由外向內數 $20^\circ$）。
+                            <strong>絕對是由內（圓心）向外數格數！</strong> 構造地質學在畫岩層傾角（Dip）時，外圈是 0°、圓心是 90°（由外向內數）；但地震學畫震源機制球時，<strong>圓心是 0°、外圈是 90°</strong>。因此，出射角 70° 代表它接近水平射出，點必須靠近外圈，也就是要從圓心向外數出 70°（或由外向內數 20°）。
                         </p>
                     </div>
                 </div>
@@ -126,13 +120,13 @@
                     <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50">
                         <h3 class="font-bold text-indigo-900 text-base mb-3 flex items-center gap-2">
                             <span class="flex items-center justify-center w-5 h-5 rounded-full bg-indigo-600 text-white text-xs">1</span> 
-                            出射角 $\le 90^\circ$ 的常規點（下半球發射）
+                            出射角 &le; 90° 的常規點（下半球發射）
                         </h3>
-                        <p class="text-gray-600 text-xs mb-3">範例：AXDP (方位角 $271^\circ$, 出射角 $70^\circ$, 極性 $-$)</p>
+                        <p class="text-gray-600 text-xs mb-3">範例：AXDP (方位角 271° , 出射角 70° , 極性 [-])</p>
                         <ul class="list-disc list-inside text-gray-700 text-sm space-y-1.5 pl-1">
-                            <li>在描圖紙邊緣標記方位角 $271^\circ$（正西方）。</li>
+                            <li>在描圖紙邊緣標記方位角 271°（正西方）。</li>
                             <li>旋轉描圖紙，將該記號對齊網格的<strong>東西水平軸</strong>。</li>
-                            <li>從<strong>圓心（$0^\circ$）出發，沿著水平軸向外數 $70^\circ$</strong>，在格線上點下點位。</li>
+                            <li>從<strong>圓心（0°）出發，沿著水平軸向外數 70°</strong>，在格線上點下點位。</li>
                             <li>依照極性，繪製對應之記號（空心圓圈）。</li>
                         </ul>
                     </div>
@@ -140,19 +134,19 @@
                     <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50">
                         <h3 class="font-bold text-indigo-900 text-base mb-3 flex items-center gap-2">
                             <span class="flex items-center justify-center w-5 h-5 rounded-full bg-indigo-600 text-white text-xs">2</span> 
-                            出射角 $> 90^\circ$ 的朝上點（上半球發射）
+                            出射角 &gt; 90° 的朝上點（上半球發射）
                         </h3>
-                        <p class="text-gray-600 text-xs mb-3">範例：EWT (方位角 $219^\circ$, 出射角 $148^\circ$, 極性 $+$)</p>
+                        <p class="text-gray-600 text-xs mb-3">範例：EWT (方位角 219° , 出射角 148° , 極性 [+])</p>
                         <ul class="list-disc list-inside text-gray-700 text-sm space-y-1.5 pl-1">
                             <li>朝上的射線無法直接畫在下半球平面，必須利用<strong>對蹠點（Antipodal）原理</strong>穿過球心投影。</li>
                             <li><strong>換算公式：</strong> 
                                 <span class="block bg-white px-2 py-1 my-1 rounded font-mono text-xs text-rose-600 border border-slate-100">
-                                    新方位角 = $219^\circ - 180^\circ = 39^\circ$<br>
-                                    新出射角 = $180^\circ - 148^\circ = 32^\circ$
+                                    新方位角 = 219° - 180° = 39°<br>
+                                    新出射角 = 180° - 148° = 32°
                                 </span>
                             </li>
-                            <li>找到新方位角 $39^\circ$（東北方）轉到水平軸。</li>
-                            <li>同樣從<strong>圓心出發，由內向外數 $32^\circ$</strong> 點下點位（記為實心點 $+$）。</li>
+                            <li>找到新方位角 39°（東北方）轉到水平軸。</li>
+                            <li>同樣從<strong>圓心出發，由內向外數 32°</strong> 點下點位（記為實心點 [+]）。</li>
                         </ul>
                     </div>
                 </div>
