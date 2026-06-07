@@ -1,1 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地震震源機制解手繪與觀念展示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc;
+        }
+        .image-compare-container {
+            transition: all 0.3s ease;
+        }
+        .image-compare-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
 
+    <header class="bg-gradient-to-r font-medium from-slate-800 to-indigo-900 text-white shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-8 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
+            <div>
+                <h1 class="text-3xl font-bold tracking-wide">震源機制球手繪 Demo 與原理展示</h1>
+                <p class="text-slate-300 mt-2 text-sm sm:text-base">地震學作業：P波初動解（Focal Mechanism）之幾何投影實作</p>
+            </div>
+            <div class="mt-4 sm:mt-0">
+                <a href="https://github.com/minh891711/earthquake_focal_mechanisms" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-white/20">
+                    <i class="fab fa-github text-lg"></i> Repository
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+
+        <section class="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+            <h2 class="text-xl font-bold border-b border-slate-200 pb-3 text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-images text-indigo-600"></i> 圖表成果對照
+            </h2>
+            <p class="text-gray-600 text-sm mt-2 mb-6">點擊下方按鈕可快速切換檢視，或直接並排對比手繪圖與程式產出的正確解答。</p>
+
+            <div class="flex justify-center gap-4 mb-6 sm:hidden">
+                <button onclick="toggleView('hand')" id="btn-hand" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-medium shadow shadow-indigo-200">檢視我的手繪</button>
+                <button onclick="toggleView('ai')" id="btn-ai" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-medium">檢視程式正解</button>
+                <button onclick="toggleView('both')" id="btn-both" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-medium">並排對比</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="image-grid">
+                <div id="wrapper-hand" class="image-compare-container bg-slate-50 p-4 rounded-xl border border-slate-200/60 flex flex-col items-center">
+                    <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-3 shadow-sm">My Artwork | 手繪圖</span>
+                    <div class="w-full bg-white rounded-lg overflow-hidden border border-slate-100 flex items-center justify-center min-h-[350px]">
+                        <img src="https://raw.githubusercontent.com/minh891711/earthquake_focal_mechanisms/main/photos/%E6%89%8B%E7%B9%AA.jpg" alt="我的手繪圖" class="max-h-[500px] object-contain hover:scale-105 transition duration-300">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center"><i class="fa-solid fa-circle-info"></i> 利用投影網格手動繪製之初動極性分佈與斷層節面</p>
+                </div>
+
+                <div id="wrapper-ai" class="image-compare-container bg-slate-50 p-4 rounded-xl border border-slate-200/60 flex flex-col items-center">
+                    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full mb-3 shadow-sm">Reference Solution | 程式正解</span>
+                    <div class="w-full bg-slate-900 rounded-lg overflow-hidden border border-slate-800 flex items-center justify-center min-h-[350px]">
+                        <img src="https://raw.githubusercontent.com/minh891711/earthquake_focal_mechanisms/main/photos/focal_mechanism_24271505.png" alt="程式正解圖" class="max-h-[500px] object-contain hover:scale-105 transition duration-300">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center"><i class="fa-solid fa-circle-info"></i> 程式繪製之 Schmidt 下半球等面積投影（多測站觀測解）</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+            <h2 class="text-xl font-bold border-b border-slate-200 pb-3 text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-circle-nodes text-indigo-600"></i> P波初動解繪製原理
+            </h2>
+            
+            <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4">
+                    <p class="text-gray-700 leading-relaxed text-sm sm:text-base">
+                        地震震源機制解（Focal Mechanism），俗稱「沙灘球（Beachball）」，是利用地震發生時，震源向四面八方傳播的 <strong>P波第一動（First Motion）</strong> 方向來推導斷層幾何形狀的方法。
+                    </p>
+                    <div class="border-l-4 border-indigo-500 bg-indigo-50/50 p-4 rounded-r-lg text-sm">
+                        <span class="font-bold text-indigo-900 block mb-1">💡 幾何投影核心概念</span>
+                        我們將震源想像成一個球心，當斷層產生錯動時，震源周圍會被劃分為四個象限：兩個<strong>壓縮區（Compression, 介質推向測站，初動向上 [+]）</strong>與兩個<strong>擴張區（Dilatation, 介質拉離測站，初動向下 [-]）</strong>。
+                    </div>
+                    <p class="text-gray-700 leading-relaxed text-sm">
+                        劃分這四個象限的兩個垂直平面，分別是<strong>斷層面（Fault Plane）</strong>與<strong>輔助面（Auxiliary Plane）</strong>，在球面上互為交線，我們統稱為<strong>節面（Nodal Planes）</strong>。藉由將球面上的觀測資料投影到二維平面上，就能完美解出震源的滑動型態（如正斷層、逆斷層、走滑斷層）。
+                    </p>
+                </div>
+                
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 text-xs sm:text-sm flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-slate-700 mb-2"><i class="fa-solid fa-table-list text-indigo-500"></i> 基礎幾何與對應參數</h4>
+                        <ul class="space-y-2 text-gray-600">
+                            <li><strong class="text-slate-800">方位角 (Azimuth, Az)：</strong> 測站相對於震源的正北順時針夾角（$0^\circ \sim 360^\circ$），決定點在投影網上的<strong>圓周角度</strong>。</li>
+                            <li><strong class="text-slate-800">出射角 (Take-off Angle, $i$)：</strong> 震源射線向外發射時與「鉛直向下」方向的夾角。</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 p-2 bg-white rounded border border-slate-200">
+                        <span class="font-bold block text-slate-700 text-xs">下半球投影網格性質：</span>
+                        <code class="text-pink-600 font-mono text-xs block mt-1">圓心 ＝ 0° (垂直向下)</code>
+                        <code class="text-pink-600 font-mono text-xs block">圓周 ＝ 90° (水平射出)</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+            <h2 class="text-xl font-bold border-b border-slate-200 pb-3 text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-pen-ruler text-indigo-600"></i> 手動繪製核心訣竅（避免翻車）
+            </h2>
+            
+            <div class="mt-6 space-y-6">
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm flex items-start gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mt-0.5"></i>
+                    <div>
+                        <h4 class="font-bold text-amber-900">⚡ 世紀大誤會：出射角到底是「由內向外」還是「由外向內」？</h4>
+                        <p class="text-amber-800 mt-1 leading-relaxed">
+                            <strong>絕對是由內（圓心）向外數格數！</strong> 構造地質學在畫岩層傾角（Dip）時，外圈是 $0^\circ$、圓心是 $90^\circ$（由外向內數）；但地震學畫震源機制球時，<strong>圓心是 $0^\circ$、外圈是 $90^\circ$</strong>。因此，出射角 $70^\circ$ 代表它接近水平射出，點必須靠近外圈，也就是要從圓心向外數出 $70^\circ$（或由外向內數 $20^\circ$）。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50">
+                        <h3 class="font-bold text-indigo-900 text-base mb-3 flex items-center gap-2">
+                            <span class="flex items-center justify-center w-5 h-5 rounded-full bg-indigo-600 text-white text-xs">1</span> 
+                            出射角 $\le 90^\circ$ 的常規點（下半球發射）
+                        </h3>
+                        <p class="text-gray-600 text-xs mb-3">範例：AXDP (方位角 $271^\circ$, 出射角 $70^\circ$, 極性 $-$)</p>
+                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1.5 pl-1">
+                            <li>在描圖紙邊緣標記方位角 $271^\circ$（正西方）。</li>
+                            <li>旋轉描圖紙，將該記號對齊網格的<strong>東西水平軸</strong>。</li>
+                            <li>從<strong>圓心（$0^\circ$）出發，沿著水平軸向外數 $70^\circ$</strong>，在格線上點下點位。</li>
+                            <li>依照極性，繪製對應之記號（空心圓圈）。</li>
+                        </ul>
+                    </div>
+
+                    <div class="border border-slate-100 rounded-xl p-4 bg-slate-50/50">
+                        <h3 class="font-bold text-indigo-900 text-base mb-3 flex items-center gap-2">
+                            <span class="flex items-center justify-center w-5 h-5 rounded-full bg-indigo-600 text-white text-xs">2</span> 
+                            出射角 $> 90^\circ$ 的朝上點（上半球發射）
+                        </h3>
+                        <p class="text-gray-600 text-xs mb-3">範例：EWT (方位角 $219^\circ$, 出射角 $148^\circ$, 極性 $+$)</p>
+                        <ul class="list-disc list-inside text-gray-700 text-sm space-y-1.5 pl-1">
+                            <li>朝上的射線無法直接畫在下半球平面，必須利用<strong>對蹠點（Antipodal）原理</strong>穿過球心投影。</li>
+                            <li><strong>換算公式：</strong> 
+                                <span class="block bg-white px-2 py-1 my-1 rounded font-mono text-xs text-rose-600 border border-slate-100">
+                                    新方位角 = $219^\circ - 180^\circ = 39^\circ$<br>
+                                    新出射角 = $180^\circ - 148^\circ = 32^\circ$
+                                </span>
+                            </li>
+                            <li>找到新方位角 $39^\circ$（東北方）轉到水平軸。</li>
+                            <li>同樣從<strong>圓心出發，由內向外數 $32^\circ$</strong> 點下點位（記為實心點 $+$）。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-6 border-t border-slate-800 text-xs sm:text-sm mt-12">
+        <p>© 2026 Earthquake Seismology Course. Crafted for Academic Demonstration.</p>
+    </footer>
+
+    <script>
+        function toggleView(view) {
+            const grid = document.getElementById('image-grid');
+            const hand = document.getElementById('wrapper-hand');
+            const ai = document.getElementById('wrapper-ai');
+            
+            // 按鈕樣式初始化
+            const btns = ['hand', 'ai', 'both'];
+            btns.forEach(b => {
+                const btn = document.getElementById(`btn-${b}`);
+                btn.className = "bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-xs font-medium";
+            });
+
+            // 啟動選中按鈕樣式
+            document.getElementById(`btn-${view}`).className = "bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-medium shadow shadow-indigo-200";
+
+            // 控制圖片顯示與網格配置
+            if (view === 'hand') {
+                grid.className = "grid grid-cols-1 gap-8";
+                hand.classList.remove('hidden');
+                ai.classList.add('hidden');
+            } else if (view === 'ai') {
+                grid.className = "grid grid-cols-1 gap-8";
+                hand.classList.add('hidden');
+                ai.classList.remove('hidden');
+            } else {
+                grid.className = "grid grid-cols-1 md:grid-cols-2 gap-8";
+                hand.classList.remove('hidden');
+                ai.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
